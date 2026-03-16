@@ -1,0 +1,981 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfdevpmb"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Validationact')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "fileexistornot",
+						"type": "Validation",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"timeout": "0.12:00:00",
+							"sleep": 10
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-11T17:49:23Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DelimitedText3",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Filter1",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@equals(item().name,'Sales')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Filter1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "Sales.csv",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedText5",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DelimitedText4",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-15T09:09:47Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/plinsertoutput')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "spinsertinput",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[InsertCustomer]",
+							"storedProcedureParameters": {
+								"CustomerID": {
+									"value": "1",
+									"type": "Int32"
+								},
+								"FirstName": {
+									"value": "rohit",
+									"type": "String"
+								},
+								"LastName": {
+									"value": "j",
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "SqlServer1",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-10T19:17:48Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DSsqlserver')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lssqlserver",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "backup_set_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "first_family_number",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "first_media_number",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "filegroup_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "page_size",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "file_number",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "backed_up_page_count",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "file_type",
+						"type": "char"
+					},
+					{
+						"name": "source_file_block_size",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "file_size",
+						"type": "decimal",
+						"precision": 20,
+						"scale": 0
+					},
+					{
+						"name": "logical_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "physical_drive",
+						"type": "nvarchar"
+					},
+					{
+						"name": "physical_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "state",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "state_desc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "create_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "drop_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "file_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "read_only_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "read_write_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "differential_base_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "differential_base_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "backup_size",
+						"type": "decimal",
+						"precision": 20,
+						"scale": 0
+					},
+					{
+						"name": "filegroup_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "is_readonly",
+						"type": "bit"
+					},
+					{
+						"name": "is_present",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "backupfile"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "backup_set_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "first_family_number",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "first_media_number",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "filegroup_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "page_size",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "file_number",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "backed_up_page_count",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "file_type",
+						"type": "char"
+					},
+					{
+						"name": "source_file_block_size",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "file_size",
+						"type": "decimal",
+						"precision": 20,
+						"scale": 0
+					},
+					{
+						"name": "logical_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "physical_drive",
+						"type": "nvarchar"
+					},
+					{
+						"name": "physical_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "state",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "state_desc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "create_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "drop_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "file_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "read_only_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "read_write_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "differential_base_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "differential_base_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "backup_size",
+						"type": "decimal",
+						"precision": 20,
+						"scale": 0
+					},
+					{
+						"name": "filegroup_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "is_readonly",
+						"type": "bit"
+					},
+					{
+						"name": "is_present",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "backupfile"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lssqlserver",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "backup_set_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "first_family_number",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "first_media_number",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "filegroup_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "page_size",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "file_number",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "backed_up_page_count",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "file_type",
+						"type": "char"
+					},
+					{
+						"name": "source_file_block_size",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "file_size",
+						"type": "decimal",
+						"precision": 20,
+						"scale": 0
+					},
+					{
+						"name": "logical_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "physical_drive",
+						"type": "nvarchar"
+					},
+					{
+						"name": "physical_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "state",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "state_desc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "create_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "drop_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "file_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "read_only_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "read_write_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "differential_base_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "differential_base_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "backup_size",
+						"type": "decimal",
+						"precision": 20,
+						"scale": 0
+					},
+					{
+						"name": "filegroup_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "is_readonly",
+						"type": "bit"
+					},
+					{
+						"name": "is_present",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "backupfile"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dssqladls')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lssqladls1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "backup_set_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "first_family_number",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "first_media_number",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "filegroup_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "page_size",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "file_number",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "backed_up_page_count",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "file_type",
+						"type": "char"
+					},
+					{
+						"name": "source_file_block_size",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "file_size",
+						"type": "decimal",
+						"precision": 20,
+						"scale": 0
+					},
+					{
+						"name": "logical_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "physical_drive",
+						"type": "nvarchar"
+					},
+					{
+						"name": "physical_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "state",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "state_desc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "create_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "drop_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "file_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "read_only_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "read_write_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "differential_base_lsn",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 0
+					},
+					{
+						"name": "differential_base_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "backup_size",
+						"type": "decimal",
+						"precision": 20,
+						"scale": 0
+					},
+					{
+						"name": "filegroup_guid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "is_readonly",
+						"type": "bit"
+					},
+					{
+						"name": "is_present",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "backupfile"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipelinecolumncount')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "SqlServerTable2",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"columnCount"
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-13T17:05:22Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/plsqllookup')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "lookupcode",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "SELECT TOP (5) [backup_set_id]\n      ,[first_family_number]\n      ,[first_media_number]\n      ,[filegroup_name]\n      ,[page_size]\n  FROM [msdb].[dbo].[backupfile]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SqlServerTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-13T17:25:25Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/plsqlmigration1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "dssqladls",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-03-10T17:38:03Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/dssqladls')]"
+			]
+		}
+	]
+}

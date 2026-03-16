@@ -1,0 +1,174 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfdevpmb"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage10_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage11_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage2_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage3_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage4_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage5_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage6_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage7_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage8_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage9_accountKey": {
+			"value": ""
+		},
+		"DSsqlserver_password": {
+			"value": ""
+		},
+		"LS_ADLS_CSVFILES_accountKey": {
+			"value": ""
+		},
+		"LS_bulk service_accountKey": {
+			"value": ""
+		},
+		"SqlServer1_password": {
+			"value": ""
+		},
+		"SqlServer2_password": {
+			"value": ""
+		},
+		"ls_multiplepmb_csv_accountKey": {
+			"value": ""
+		},
+		"lssqladls1_password": {
+			"value": ""
+		},
+		"lssqlserver_password": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage10_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage11_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage3_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage4_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage5_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage6_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage7_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage8_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage9_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://keyvaultprojectdata11.vault.azure.net/"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "azuresqldatabase0011.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "testdata"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "admindata"
+		},
+		"DSsqlserver_properties_typeProperties_server": {
+			"value": "Pranjal-Lapi\\SQLEXPRESS"
+		},
+		"DSsqlserver_properties_typeProperties_database": {
+			"value": "msdb"
+		},
+		"DSsqlserver_properties_typeProperties_userName": {
+			"value": "pranjal"
+		},
+		"LS_ADLS_CSVFILES_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"LS_bulk service_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net/"
+		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://retoolapi.dev/5yDVOt/data"
+		},
+		"SqlServer1_properties_typeProperties_server": {
+			"value": "Pranjal-Lapi\\SQLEXPRESS"
+		},
+		"SqlServer1_properties_typeProperties_database": {
+			"value": "msdb"
+		},
+		"SqlServer1_properties_typeProperties_userName": {
+			"value": "pranjal"
+		},
+		"SqlServer2_properties_typeProperties_server": {
+			"value": "Pranjal-Lapi\\SQLEXPRESS"
+		},
+		"SqlServer2_properties_typeProperties_database": {
+			"value": "msdb"
+		},
+		"SqlServer2_properties_typeProperties_userName": {
+			"value": "pranjal"
+		},
+		"ls_multiplepmb_csv_properties_typeProperties_url": {
+			"value": "https://adlsdevpmb.dfs.core.windows.net"
+		},
+		"lssqladls1_properties_typeProperties_server": {
+			"value": "Pranjal-Lapi\\SQLEXPRESS"
+		},
+		"lssqladls1_properties_typeProperties_database": {
+			"value": "msdb"
+		},
+		"lssqladls1_properties_typeProperties_userName": {
+			"value": "pranjal"
+		},
+		"lssqlserver_properties_typeProperties_server": {
+			"value": "Pranjal-Lapi\\SQLEXPRESS"
+		},
+		"lssqlserver_properties_typeProperties_database": {
+			"value": "msdb"
+		},
+		"lssqlserver_properties_typeProperties_userName": {
+			"value": "pranjal"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
