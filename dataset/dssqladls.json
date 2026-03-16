@@ -1,0 +1,147 @@
+{
+	"name": "dssqladls",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lssqladls1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "backup_set_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "first_family_number",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "first_media_number",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "filegroup_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "page_size",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "file_number",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "backed_up_page_count",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "file_type",
+				"type": "char"
+			},
+			{
+				"name": "source_file_block_size",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "file_size",
+				"type": "decimal",
+				"precision": 20,
+				"scale": 0
+			},
+			{
+				"name": "logical_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "physical_drive",
+				"type": "nvarchar"
+			},
+			{
+				"name": "physical_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "state",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "state_desc",
+				"type": "nvarchar"
+			},
+			{
+				"name": "create_lsn",
+				"type": "decimal",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "drop_lsn",
+				"type": "decimal",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "file_guid",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "read_only_lsn",
+				"type": "decimal",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "read_write_lsn",
+				"type": "decimal",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "differential_base_lsn",
+				"type": "decimal",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "differential_base_guid",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "backup_size",
+				"type": "decimal",
+				"precision": 20,
+				"scale": 0
+			},
+			{
+				"name": "filegroup_guid",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "is_readonly",
+				"type": "bit"
+			},
+			{
+				"name": "is_present",
+				"type": "bit"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "backupfile"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

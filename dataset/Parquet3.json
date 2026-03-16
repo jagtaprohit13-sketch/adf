@@ -1,0 +1,145 @@
+{
+	"name": "Parquet3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage3",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "outputmultiplefilespmb"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "backup_set_id",
+				"type": "INT32"
+			},
+			{
+				"name": "first_family_number",
+				"type": "INT32"
+			},
+			{
+				"name": "first_media_number",
+				"type": "INT32"
+			},
+			{
+				"name": "filegroup_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "page_size",
+				"type": "INT32"
+			},
+			{
+				"name": "file_number",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "backed_up_page_count",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "file_type",
+				"type": "UTF8"
+			},
+			{
+				"name": "source_file_block_size",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "file_size",
+				"type": "DECIMAL",
+				"precision": 20,
+				"scale": 0
+			},
+			{
+				"name": "logical_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "physical_drive",
+				"type": "UTF8"
+			},
+			{
+				"name": "physical_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "state",
+				"type": "INT32"
+			},
+			{
+				"name": "state_desc",
+				"type": "UTF8"
+			},
+			{
+				"name": "create_lsn",
+				"type": "DECIMAL",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "drop_lsn",
+				"type": "DECIMAL",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "file_guid",
+				"type": "UTF8"
+			},
+			{
+				"name": "read_only_lsn",
+				"type": "DECIMAL",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "read_write_lsn",
+				"type": "DECIMAL",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "differential_base_lsn",
+				"type": "DECIMAL",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "differential_base_guid",
+				"type": "UTF8"
+			},
+			{
+				"name": "backup_size",
+				"type": "DECIMAL",
+				"precision": 20,
+				"scale": 0
+			},
+			{
+				"name": "filegroup_guid",
+				"type": "UTF8"
+			},
+			{
+				"name": "is_readonly",
+				"type": "BOOLEAN"
+			},
+			{
+				"name": "is_present",
+				"type": "BOOLEAN"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
